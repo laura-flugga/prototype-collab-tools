@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Northwind — Dashboard</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #0f172a; background: #f1f5f9; display: flex; }
+      .side { width: 200px; background: #0f172a; color: #cbd5e1; min-height: 100vh; padding: 22px 16px; }
+      .side .brand { color: #fff; font-weight: 800; margin-bottom: 24px; }
+      .side a { display: block; padding: 9px 12px; border-radius: 8px; color: #cbd5e1; text-decoration: none; font-size: 14px; margin-bottom: 4px; }
+      .side a.active { background: #4f46e5; color: #fff; }
+      .main { flex: 1; padding: 28px 32px; }
+      h1 { margin: 0 0 20px; font-size: 24px; }
+      .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+      .stat { background: #fff; border-radius: 12px; padding: 18px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+      .stat .k { font-size: 13px; color: #64748b; }
+      .stat .v { font-size: 28px; font-weight: 800; margin-top: 4px; }
+      .stat .up { color: #16a34a; font-size: 12px; font-weight: 600; }
+      .panel { background: #fff; border-radius: 12px; padding: 8px 18px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+      .row { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+      .row:last-child { border-bottom: none; }
+      .pill { background: #dcfce7; color: #166534; border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <aside class="side">
+      <div class="brand">◆ Northwind</div>
+      <a class="active">Dashboard</a><a>Projects</a><a>Reports</a><a>Team</a><a>Settings</a>
+    </aside>
+    <main class="main">
+      <h1>Dashboard</h1>
+      <div class="stats">
+        <div class="stat"><div class="k">Open tasks</div><div class="v">128</div><div class="up">▲ 12% this week</div></div>
+        <div class="stat"><div class="k">Completed</div><div class="v">342</div><div class="up">▲ 8% this week</div></div>
+        <div class="stat"><div class="k">Cycle time</div><div class="v">2.4d</div><div class="up">▲ faster</div></div>
+      </div>
+      <div class="panel">
+        <div class="row"><span>Redesign onboarding flow</span><span class="pill">On track</span></div>
+        <div class="row"><span>Migrate billing service</span><span class="pill">On track</span></div>
+        <div class="row"><span>Q3 analytics rollup</span><span class="pill">On track</span></div>
+        <div class="row"><span>Mobile push notifications</span><span class="pill">On track</span></div>
+      </div>
+    </main>
+  </body>
+</html>

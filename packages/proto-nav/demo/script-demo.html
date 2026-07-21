@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>proto-nav — script tag demo</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        max-width: 640px;
+        margin: 60px auto;
+        padding: 0 20px;
+        color: #222;
+        /* Deliberately aggressive host styles to prove shadow-DOM isolation. */
+      }
+      button { color: hotpink; border: 3px dashed hotpink; }
+      h1 { color: teal; }
+    </style>
+  </head>
+  <body>
+    <h1>proto-nav demo (IIFE / script tag)</h1>
+    <p>
+      The host page styles buttons hot-pink with a dashed border. The floating
+      <strong>Menu</strong> button (bottom-right) should be unaffected — proof the
+      widget is isolated inside a shadow root.
+    </p>
+    <p>Click <strong>Menu</strong> to open the gallery. Drag it to reposition (persists across reloads).</p>
+
+    <!-- Local build. On a published package this would be:
+         <script src="https://cdn.jsdelivr.net/npm/proto-nav"></script> -->
+    <script src="../dist/proto-nav.iife.js"></script>
+    <script>
+      ProtoNav.init({
+        title: "Northwind Prototype",
+        entries: [
+          { title: "Marketing home", url: "../../../examples/pages/home.html", type: "flow", description: "Landing page and sign-up entry point." },
+          { title: "Dashboard", url: "../../../examples/pages/dashboard.html", type: "flow", description: "Signed-in overview with key metrics." },
+          { title: "Pricing", url: "../../../examples/pages/pricing.html", type: "requirement", description: "Plan comparison and upgrade." },
+          { title: "Account settings", url: "../../../examples/pages/settings.html", type: "edge-case", description: "Profile and workspace preferences." }
+        ]
+      });
+    </script>
+  </body>
+</html>
