@@ -4,6 +4,7 @@ import {
   annotations as annStore,
   config as cfgStore,
   hide as hideStore,
+  minimizedIds,
   rescan,
   show as showStore,
   toggle as toggleStore,
@@ -97,6 +98,14 @@ export function isVisible(): boolean {
   return visible.value;
 }
 
+/** Replace which annotations are collapsed to just their number badge. Lets a
+ *  host app draw attention to a subset of callouts in response to its own
+ *  state changes (e.g. a modal opening) — pass every other loaded id to
+ *  collapse, or an empty array to expand everything. */
+export function setMinimized(ids: Iterable<string>): void {
+  minimizedIds.value = new Set(ids);
+}
+
 /** Remove the widget entirely and stop polling/observing. */
 export function destroy(): void {
   if (pollTimer) clearInterval(pollTimer);
@@ -109,5 +118,14 @@ export function destroy(): void {
   unmount();
 }
 
-export const Annotations = { init, show, hide, toggle, refresh, isVisible, destroy };
+export const Annotations = {
+  init,
+  show,
+  hide,
+  toggle,
+  refresh,
+  isVisible,
+  setMinimized,
+  destroy,
+};
 export default Annotations;
