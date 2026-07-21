@@ -11,6 +11,7 @@ export function configFromScript(script: HTMLScriptElement | null): AnnotationsC
   if (d.poll != null) cfg.pollMs = Number(d.poll) || 0;
   if (d.startVisible != null) cfg.startVisible = d.startVisible !== "false";
   if (d.observe != null) cfg.observe = d.observe !== "false";
+  if (d.clusterDistance != null) cfg.clusterDistance = Number(d.clusterDistance) || 0;
   if (d.toggleButton != null) cfg.toggleButton = d.toggleButton !== "false";
   if (d.debug != null) cfg.debug = d.debug !== "false";
   return cfg;
@@ -34,6 +35,7 @@ export function normalizeConfig(cfg: AnnotationsConfig): NormalizedConfig {
     pollMs: Math.max(0, cfg.pollMs ?? 0),
     startVisible: cfg.startVisible ?? false,
     observe: cfg.observe ?? true,
+    clusterDistance: cfg.clusterDistance != null ? Math.max(0, cfg.clusterDistance) : 16,
     toggleButton: cfg.toggleButton ?? true,
     debug: cfg.debug ?? false,
   };

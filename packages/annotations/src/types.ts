@@ -39,6 +39,10 @@ export interface AnnotationsConfig {
   attribute?: string;
   /** Watch the DOM (MutationObserver) and re-anchor as targets mount/unmount. Default true. */
   observe?: boolean;
+  /** Merge annotations whose target elements are within this many px (overlap or
+   *  small gap) into a single grouped bubble, so notes on close-together items
+   *  stay usable. Default 16; `0` disables clustering. */
+  clusterDistance?: number;
   /** Render the built-in floating show/hide button. Set false when another UI
    *  (e.g. proto-nav's nav menu) controls visibility instead. Default true. */
   toggleButton?: boolean;
@@ -52,6 +56,7 @@ export interface NormalizedConfig {
   pollMs: number;
   startVisible: boolean;
   observe: boolean;
+  clusterDistance: number;
   toggleButton: boolean;
   debug: boolean;
 }

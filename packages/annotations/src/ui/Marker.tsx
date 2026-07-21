@@ -65,6 +65,19 @@ export function Marker({
       ring.style.width = `${r.width + 4}px`;
       ring.style.height = `${r.height + 4}px`;
 
+      if (!arrowEl) {
+        // Minimized: pin the number badge on the target's top-left corner so it
+        // stays on its own element and never floats into the gap between two
+        // neighbours (where it could overlap another badge/ring).
+        const bw = callout.offsetWidth;
+        const bh = callout.offsetHeight;
+        const bx = Math.max(PAD, Math.min(r.left - bw / 2, window.innerWidth - bw - PAD));
+        const by = Math.max(PAD, Math.min(r.top - bh / 2, window.innerHeight - bh - PAD));
+        callout.style.left = `${bx}px`;
+        callout.style.top = `${by}px`;
+        return;
+      }
+
       computePosition(target, callout, {
         strategy: "fixed",
         placement,
