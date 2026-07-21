@@ -1,6 +1,6 @@
 # proto-nav
 
-A tiny, **framework-agnostic** prototype navigator. Drop it into any web prototype and it renders a landing **gallery of flow cards** (grouped as flows / requirements / edge cases) that deep-link into each flow, plus a **persistent floating Menu button** on every page to jump back to the gallery.
+A tiny, **framework-agnostic** prototype navigator. Drop it into any web prototype and it renders a landing **gallery of flow cards** (grouped as flows / requirements / edge cases) that deep-link into each flow, plus a **persistent, draggable floating toolbar** on every page — a Menu button to open the gallery, and (with `notesToggle`) a Show/Hide notes button — that you can drag anywhere by its grip.
 
 ![proto-nav gallery](../../docs/images/proto-nav.png)
 
@@ -54,12 +54,12 @@ ProtoNav.destroy(): void
 | `entries`         | `Entry[]`                                                    | —                | Inline entries. Takes precedence over `src`. |
 | `src`             | `string`                                                    | —                | URL to fetch a JSON config: an `Entry[]` or `{ entries, title }`. |
 | `title`           | `string`                                                    | `"Prototypes"`   | Gallery heading. |
-| `position`        | `"bottom-right" \| "bottom-left" \| "top-right" \| "top-left"` | `"bottom-right"` | Menu button corner. |
-| `draggable`       | `boolean`                                                    | `true`           | Drag the button; position persists in `localStorage`. |
+| `position`        | `"bottom-right" \| "bottom-left" \| "top-right" \| "top-left"` | `"bottom-right"` | Toolbar corner. |
+| `draggable`       | `boolean`                                                    | `true`           | Drag the toolbar by its grip; position persists in `localStorage`. |
 | `startOpen`       | `boolean`                                                    | `false`          | Open the gallery immediately on load, every time. |
 | `openOnFirstLoad` | `boolean`                                                    | `false`          | Open the gallery on load only if no entry URL matches the current page. |
 | `previews`        | `boolean`                                                    | `true`           | Use a live iframe preview of each flow as its card thumbnail (a per-entry `thumbnail` always wins). Pages that forbid framing render blank — set a `thumbnail` for those, or `previews: false` for placeholders. |
-| `notesToggle`     | `boolean`                                                    | `false`          | Show a "Show / Hide notes" control in the gallery that drives the [`annotations`](../annotations) widget (via its `window.Annotations` global). |
+| `notesToggle`     | `boolean`                                                    | `false`          | Add a "Show / Hide notes" button to the floating toolbar (and a matching control in the gallery) that drives the [`annotations`](../annotations) widget via its `window.Annotations` global. Pair with the annotations widget's `toggleButton: false`. |
 
 ### `Entry`
 
