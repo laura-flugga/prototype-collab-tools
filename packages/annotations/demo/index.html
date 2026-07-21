@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>annotations — demo</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        margin: 0;
+        color: #0f172a;
+        background: #eef0f6;
+      }
+      .wrap { max-width: 560px; margin: 0 auto; padding: 48px 24px 120px; }
+      .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+      .brand { font-size: 20px; font-weight: 800; color: #4f46e5; }
+      .save { background: #4f46e5; color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-size: 15px; font-weight: 600; cursor: pointer; }
+      h1 { font-size: 22px; margin: 0 0 20px; }
+      .card { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+      .field { margin: 0 0 20px; }
+      .field:last-child { margin-bottom: 0; }
+      .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #475569; }
+      .field input, .field select { width: 100%; padding: 10px 12px; border: 1px solid #d7dbe4; border-radius: 8px; font-size: 15px; background: #fff; }
+      .status { display: inline-block; padding: 4px 10px; border-radius: 999px; background: #dcfce7; color: #166534; font-size: 13px; font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="top">
+        <div class="brand" data-annote="brand">◆ Northwind</div>
+        <button class="save" data-annote="save">Save changes</button>
+      </div>
+      <h1>Account settings</h1>
+      <div class="card">
+        <span class="status" data-annote="status">Synced</span>
+        <div class="field" style="margin-top:16px">
+          <label>Full name</label>
+          <input data-annote="name" placeholder="Alex Rivera" />
+        </div>
+        <div class="field">
+          <label>Work email</label>
+          <input data-annote="email" placeholder="alex@company.com" />
+        </div>
+        <div class="field">
+          <label>Workspace role</label>
+          <select data-annote="role"><option>Admin</option><option>Member</option><option>Guest</option></select>
+        </div>
+      </div>
+    </div>
+
+    <script src="../dist/annotations.iife.js"></script>
+    <script>
+      Annotations.init({
+        startVisible: true,
+        annotations: [
+          { id: "a1", target: "brand", number: "1", title: "Brand mark", body: "Uses the primary brand color. Clickable — returns to the dashboard.", placement: "bottom", order: 1 },
+          { id: "a2", target: "save", number: "1.2", title: "Save action", body: "Persists changes. Disabled until the form is dirty.", placement: "bottom", order: 2 },
+          { id: "a3", target: "status", number: "2.1", title: "Sync status", body: "Live chip. Green = synced, amber = pending, red = error.", placement: "right", order: 3 },
+          { id: "a4", target: "name", number: "3.1", title: "Full name", body: "Shown on the profile and in @mentions.", placement: "top", order: 4 },
+          { id: "a5", target: "email", number: "3.2a", title: "Work email", body: "Used for sign-in and notifications.", placement: "bottom", order: 5 },
+          { id: "a6", target: "missing-el", number: "4", title: "Not on this page", body: "This target does not exist — it should be skipped silently.", order: 6 }
+        ]
+      });
+    </script>
+  </body>
+</html>

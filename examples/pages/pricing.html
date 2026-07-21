@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Northwind — Pricing</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #0f172a; background: #fafafa; }
+      .head { text-align: center; padding: 56px 20px 24px; }
+      .head h1 { font-size: 34px; margin: 0 0 8px; }
+      .head p { color: #64748b; margin: 0; }
+      .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 940px; margin: 0 auto; padding: 24px 20px 60px; }
+      .tier { background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 28px; }
+      .tier.pop { border-color: #4f46e5; box-shadow: 0 12px 30px rgba(79,70,229,.15); position: relative; }
+      .tier.pop::after { content: "Most popular"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #4f46e5; color: #fff; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; }
+      .tier h3 { margin: 0 0 4px; font-size: 18px; }
+      .price { font-size: 40px; font-weight: 800; margin: 10px 0; }
+      .price span { font-size: 15px; font-weight: 500; color: #64748b; }
+      .tier ul { list-style: none; padding: 0; margin: 16px 0 22px; color: #475569; font-size: 14px; }
+      .tier li { padding: 6px 0; }
+      .cta { width: 100%; border: none; border-radius: 10px; padding: 12px; font-weight: 700; font-size: 15px; cursor: pointer; background: #eef2ff; color: #4f46e5; }
+      .tier.pop .cta { background: #4f46e5; color: #fff; }
+    </style>
+  </head>
+  <body>
+    <div class="head"><h1>Simple, honest pricing</h1><p>Start free. Upgrade when your team grows.</p></div>
+    <div class="tiers">
+      <div class="tier"><h3>Starter</h3><div class="price">$0<span>/mo</span></div><ul><li>Up to 3 projects</li><li>Basic boards</li><li>Community support</li></ul><button class="cta">Get started</button></div>
+      <div class="tier pop"><h3>Team</h3><div class="price">$12<span>/user/mo</span></div><ul><li>Unlimited projects</li><li>Automations</li><li>Dashboards</li><li>Priority support</li></ul><button class="cta">Start trial</button></div>
+      <div class="tier"><h3>Enterprise</h3><div class="price">Custom</div><ul><li>SSO &amp; SCIM</li><li>Audit logs</li><li>Dedicated success</li></ul><button class="cta">Contact sales</button></div>
+    </div>
+  </body>
+</html>

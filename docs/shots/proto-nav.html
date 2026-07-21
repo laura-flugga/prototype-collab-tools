@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>proto-nav</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; background: #eef0f6; height: 100vh; }
+    </style>
+  </head>
+  <body>
+    <script src="../../packages/proto-nav/dist/proto-nav.iife.js"></script>
+    <script>
+      ProtoNav.init({
+        title: "Northwind Prototype",
+        startOpen: true,
+        entries: [
+          { title: "Marketing home", url: "../../examples/pages/home.html", type: "flow", description: "Landing page and sign-up entry point." },
+          { title: "Dashboard", url: "../../examples/pages/dashboard.html", type: "flow", description: "Signed-in overview with key metrics." },
+          { title: "Pricing", url: "../../examples/pages/pricing.html", type: "requirement", description: "Plan comparison and upgrade." },
+          { title: "Account settings", url: "../../examples/pages/settings.html", type: "edge-case", description: "Profile and workspace preferences." }
+        ]
+      });
+    </script>
+  </body>
+</html>
