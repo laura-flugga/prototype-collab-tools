@@ -1,27 +1,16 @@
-import { useEffect, useState } from "preact/hooks";
+import { useEffect } from "preact/hooks";
 import type { NormalizedConfig, NormalizedEntry } from "../types";
-import { closeGallery } from "../core/store";
+import { closeGallery, notesShown, toggleNotes } from "../core/store";
 import { Card } from "./Card";
 
-/** Optional control that toggles the sibling `annotations` widget via its global.
- *  Renders nothing if that widget isn't present on the page. */
-interface AnnotationsApi {
-  toggle?: () => void;
-  isVisible?: () => boolean;
-}
+/** Control that toggles the sibling `annotations` widget via the shared state. */
 function NotesToggle() {
-  const [, force] = useState(0);
-  const api = (window as unknown as { Annotations?: AnnotationsApi }).Annotations;
-  if (!api?.toggle) return null;
-  const on = api.isVisible?.() ?? false;
+  const on = notesShown.value;
   return (
     <button
       type="button"
       class={`pn-notes${on ? " pn-notes-on" : ""}`}
-      onClick={() => {
-        api.toggle?.();
-        force((n) => n + 1);
-      }}
+      onClick={toggleNotes}
     >
       {on ? "Hide notes" : "Show notes"}
     </button>

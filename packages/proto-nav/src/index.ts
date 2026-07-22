@@ -5,6 +5,7 @@ import {
   config as configSignal,
   openGallery,
   isOpen,
+  syncNotes,
 } from "./core/store";
 import { isActive } from "./nav";
 import type { ProtoNavConfig } from "./types";
@@ -21,6 +22,7 @@ export type {
  *  config is fetched asynchronously and applied when ready. */
 function init(raw: ProtoNavConfig = {}): void {
   mount();
+  syncNotes();
 
   const apply = (cfg: ProtoNavConfig) => {
     const normalized = normalizeConfig(cfg);

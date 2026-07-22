@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 import type { ButtonPosition } from "../types";
-import { toggleGallery } from "../core/store";
+import { notesShown, toggleGallery, toggleNotes } from "../core/store";
 
 const STORAGE_KEY = "proto-nav:toolbar-pos";
 const DRAG_THRESHOLD = 4; // px before a press on the grip/background becomes a drag
@@ -40,28 +40,16 @@ function clamp(p: Pos, el: HTMLElement | null): Pos {
   };
 }
 
-interface AnnotationsApi {
-  toggle?: () => void;
-  isVisible?: () => boolean;
-}
-function annotationsApi(): AnnotationsApi | undefined {
-  return (window as unknown as { Annotations?: AnnotationsApi }).Annotations;
-}
-
 /** Show/Hide notes button that drives the sibling `annotations` widget. */
 function NotesButton() {
-  const [, force] = useState(0);
-  const on = annotationsApi()?.isVisible?.() ?? false;
+  const on = notesShown.value;
   return (
     <button
       type="button"
       class="pn-tool-btn"
       aria-pressed={on}
       title={on ? "Hide notes" : "Show notes"}
-      onClick={() => {
-        annotationsApi()?.toggle?.();
-        force((n) => n + 1);
-      }}
+      onClick={toggleNotes}
     >
       <span class={`pn-tool-dot${on ? " pn-dot-on" : ""}`} aria-hidden="true" />
       {on ? "Hide notes" : "Show notes"}
