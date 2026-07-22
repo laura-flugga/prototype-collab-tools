@@ -26,8 +26,13 @@ export type ButtonPosition =
 export interface ProtoNavConfig {
   /** Inline entries. Mutually usable with `src` (inline wins if both given). */
   entries?: Entry[];
-  /** URL to fetch a JSON config from: either an `Entry[]` or `{ entries, title }`. */
+  /** URL to fetch a config from: JSON (`Entry[]` or `{ entries, title }`) or a
+   *  published-sheet CSV — the format is auto-detected. Inline `entries` win. */
   src?: string;
+  /** URL of a published Google Sheet (or any CSV) to build entries from. Header
+   *  columns map to entry fields: `title`, `url`, `type`, `description`, `id`,
+   *  `thumbnail`, `enabled`. Takes precedence over `src`; `entries` win over both. */
+  sheet?: string;
   /** Gallery heading. Default: "Prototypes". */
   title?: string;
   /** Anchor corner for the floating Menu button. Default: "bottom-right". */

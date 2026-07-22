@@ -5,6 +5,8 @@ import type {
   NormalizedEntry,
   ProtoNavConfig,
 } from "../types";
+import { rowsToEntries } from "./sheet";
+import { parseCsv } from "@proto-collab/shared";
 
 const VALID_POSITIONS: ButtonPosition[] = [
   "bottom-right",
@@ -55,14 +57,31 @@ export function normalizeConfig(raw: ProtoNavConfig): NormalizedConfig {
   };
 }
 
-/** Fetch a JSON config from `src`. Accepts either an `Entry[]` or a
- *  `{ entries, title? }` object. Returns entries + optional title. */
+/** Heuristic: does this `src` point at a CSV (a published sheet) rather than
+ *  JSON? True when the URL names CSV (`.csv`, Google's `output=csv`) or the
+ *  response advertises a CSV content-type. */
+export function isCsvSource(src: string, contentType = ""): boolean {
+  return (
+    /[?&]output=csv/i.test(src) ||
+    /\.csv($|\?|#)/i.test(src) ||
+    /text\/csv/i.test(contentType)
+  );
+}
+
+/** Fetch a config from `src`. Auto-detects CSV (a published sheet) vs JSON.
+ *  JSON accepts either an `Entry[]` or a `{ entries, title? }` object; CSV maps
+ *  header-named columns into entries. Returns entries + optional title. */
 export async function fetchConfig(
   src: string,
 ): Promise<{ entries: Entry[]; title?: string }> {
   const res = await fetch(src, { credentials: "same-origin" });
   if (!res.ok) throw new Error(`proto-nav: failed to fetch config (${res.status})`);
-  const data = (await res.json()) as unknown;
+
+  if (isCsvSource(src, res.headers.get("content-type") ?? "")) {
+    return { entries: rowsToEntries(parseCsv(await res.text())) };
+  }
+
+  const data = JSON.parse(await res.text()) as unknown;
   if (Array.isArray(data)) return { entries: data as Entry[] };
   if (data && typeof data === "object") {
     const obj = data as { entries?: Entry[]; title?: string };

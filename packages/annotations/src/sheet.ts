@@ -1,4 +1,4 @@
-import { parseCsv } from "./csv";
+import { parseCsv } from "@proto-collab/shared";
 import type { Annotation, Placement } from "./types";
 
 const PLACEMENTS: Placement[] = ["top", "bottom", "left", "right"];
