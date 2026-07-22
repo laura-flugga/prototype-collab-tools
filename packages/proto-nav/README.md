@@ -51,8 +51,9 @@ ProtoNav.destroy(): void
 
 | Option            | Type                                                          | Default          | Description |
 | ----------------- | ------------------------------------------------------------ | ---------------- | ----------- |
-| `entries`         | `Entry[]`                                                    | —                | Inline entries. Takes precedence over `src`. |
-| `src`             | `string`                                                    | —                | URL to fetch a JSON config: an `Entry[]` or `{ entries, title }`. |
+| `entries`         | `Entry[]`                                                    | —                | Inline entries. Highest precedence (`entries` > `sheet` > `src`). |
+| `sheet`           | `string`                                                    | —                | URL of a published Google Sheet (or any CSV) to build entries from. See [Authoring in a sheet](#authoring-in-a-sheet). |
+| `src`             | `string`                                                    | —                | URL to fetch a config: JSON (`Entry[]` or `{ entries, title }`) **or** a CSV — the format is auto-detected. |
 | `title`           | `string`                                                    | `"Prototypes"`   | Gallery heading. |
 | `position`        | `"bottom-right" \| "bottom-left" \| "top-right" \| "top-left"` | `"bottom-right"` | Toolbar corner. |
 | `draggable`       | `boolean`                                                    | `true`           | Drag the toolbar by its grip; position persists in `localStorage`. |
@@ -75,6 +76,34 @@ interface Entry {
 ```
 
 Entries are grouped by `type`. `flow`, `requirement`, and `edge-case` get friendly section headings; any other value is title-cased and used as its own section. The card matching the current URL is highlighted automatically.
+
+## Authoring in a sheet
+
+Let a designer own the menu — links, titles, descriptions — in a spreadsheet, no code edits required. Make a Google Sheet with a header row, then **File → Share → Publish to web → CSV**, and hand proto-nav the published URL:
+
+```js
+ProtoNav.init({ sheet: "https://docs.google.com/spreadsheets/d/…/pub?output=csv" });
+```
+
+The published CSV is also auto-detected through `src`, so a `.csv` file or `output=csv` URL works there too:
+
+```js
+ProtoNav.init({ src: "/menu.csv" }); // JSON vs CSV is detected automatically
+```
+
+Columns are matched by header name (case-insensitive, any order); unknown columns are ignored:
+
+| Column        | Required | Maps to                                             |
+| ------------- | -------- | --------------------------------------------------- |
+| `title`       | ✅       | `Entry.title` |
+| `url`         | ✅       | `Entry.url` |
+| `type`        |          | `Entry.type` (grouping bucket; default `flow`) |
+| `description` |          | `Entry.description` (alias: `desc`) |
+| `id`          |          | `Entry.id` (defaults to a slug of `title`) |
+| `thumbnail`   |          | `Entry.thumbnail` (alias: `thumb`) |
+| `enabled`     |          | Set `FALSE` / `no` / `0` to hide a row without deleting it |
+
+Rows missing `title` or `url` (and blank rows) are skipped. Because it's a live published CSV, editing the sheet updates the menu on the next page load — no redeploy.
 
 ## License
 

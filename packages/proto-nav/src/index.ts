@@ -1,4 +1,5 @@
 import { fetchConfig, normalizeConfig } from "./core/config";
+import { fetchSheet } from "./core/sheet";
 import { mount, unmount } from "./core/mount";
 import {
   closeGallery,
@@ -18,8 +19,9 @@ export type {
 } from "./types";
 
 /** Mount the Menu button + gallery. Idempotent: calling `init` again replaces
- *  the active config. Inline `entries` take precedence; if only `src` is given,
- *  config is fetched asynchronously and applied when ready. */
+ *  the active config. Precedence: inline `entries` > `sheet` (CSV) > `src`
+ *  (JSON or auto-detected CSV); remote sources are fetched asynchronously and
+ *  applied when ready. */
 function init(raw: ProtoNavConfig = {}): void {
   mount();
   syncNotes();
@@ -37,6 +39,10 @@ function init(raw: ProtoNavConfig = {}): void {
 
   if (raw.entries && raw.entries.length > 0) {
     apply(raw);
+  } else if (raw.sheet) {
+    void fetchSheet(raw.sheet)
+      .then((entries) => apply({ ...raw, entries }))
+      .catch((err) => console.error("[proto-nav]", err));
   } else if (raw.src) {
     void fetchConfig(raw.src)
       .then(({ entries, title }) => apply({ ...raw, entries, title: raw.title ?? title }))

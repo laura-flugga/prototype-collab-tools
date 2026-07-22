@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseCsv } from "./csv";
+import { parseCsv } from "@proto-collab/shared";
 import { coerceAnnotations, rowsToAnnotations } from "./sheet";
 
 const rows = (csv: string) => rowsToAnnotations(parseCsv(csv));
