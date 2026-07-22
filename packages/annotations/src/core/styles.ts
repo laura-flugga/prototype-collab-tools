@@ -108,6 +108,32 @@ export const styles = /* css */ `
 
   .an-callout-title { font-weight: 700; margin: 0 0 2px; font-size: 13px; }
   .an-callout-body { margin: 0; color: #d8d8e6; white-space: pre-wrap; }
+
+  /* ---- Cluster: several nearby annotations shown as one grouped bubble ---- */
+  .an-cluster { max-width: 320px; }
+  .an-cluster-count {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #9a9ab2;
+    flex: 1;
+  }
+  .an-cluster-list {
+    display: flex;
+    flex-direction: column;
+    max-height: 260px;
+    overflow-y: auto;
+    margin: 4px -4px 0;
+  }
+  .an-cluster-item { padding: 8px 6px; border-radius: 8px; }
+  .an-cluster-item + .an-cluster-item { border-top: 1px solid rgba(255, 255, 255, 0.08); }
+  .an-cluster-item:hover { background: rgba(255, 255, 255, 0.08); }
+  .an-cluster-item .an-callout-title { margin: 0; }
+  .an-cluster-item .an-callout-body { margin-top: 2px; }
+  /* The member highlight ring is always the neon variant (shown only on row hover). */
+  .an-member-ring { border-color: #39ff14; box-shadow: 0 0 0 4px rgba(57, 255, 20, 0.3), 0 0 12px rgba(57, 255, 20, 0.5); }
   .an-callout-num {
     display: inline-flex;
     align-items: center;

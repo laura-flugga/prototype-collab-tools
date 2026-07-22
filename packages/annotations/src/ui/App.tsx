@@ -1,3 +1,4 @@
+import type { VNode } from "preact";
 import { useEffect } from "preact/hooks";
 import {
   annotations,
@@ -8,11 +9,18 @@ import {
   scanTick,
   visible,
 } from "../core/store";
+import { clusterByProximity, type Positioned } from "../cluster";
 import { Marker } from "./Marker";
+import { ClusterMarker, type ClusterMember } from "./ClusterMarker";
 import { ToggleButton } from "./ToggleButton";
 
 function selectorFor(attr: string, value: string): string {
   return `[${attr}="${value.replace(/"/g, '\\"')}"]`;
+}
+
+/** Stable id for a cluster, independent of member order. */
+function clusterId(members: ClusterMember[]): string {
+  return "cl:" + members.map((m) => m.annotation.id).sort().join("|");
 }
 
 /** Root component. Renders the toggle always; when visible, resolves each
@@ -42,31 +50,55 @@ export function App() {
 
   const focused = focusedId.value;
   const minimized = minimizedIds.value;
-  const markers = visible.value
-    ? annotations.value
-        .map((a, i) => {
-          const el = a.target
-            ? document.querySelector<HTMLElement>(selectorFor(cfg.attribute, a.target))
-            : null;
-          if (!el) {
-            if (cfg.debug && a.target) {
-              console.warn(`[annotations] no target for "${a.target}" (${cfg.attribute})`);
-            }
-            return null;
-          }
-          return (
-            <Marker
-              key={a.id}
-              annotation={a}
-              target={el}
-              num={i + 1}
-              focused={a.id === focused}
-              minimized={minimized.has(a.id)}
-            />
-          );
-        })
-        .filter(Boolean)
-    : null;
+
+  let markers: VNode[] | null = null;
+  if (visible.value) {
+    // Resolve each annotation's target element and measure it.
+    const resolved: Positioned<ClusterMember>[] = [];
+    annotations.value.forEach((a, i) => {
+      const el = a.target
+        ? document.querySelector<HTMLElement>(selectorFor(cfg.attribute, a.target))
+        : null;
+      if (!el) {
+        if (cfg.debug && a.target) {
+          console.warn(`[annotations] no target for "${a.target}" (${cfg.attribute})`);
+        }
+        return;
+      }
+      const r = el.getBoundingClientRect();
+      resolved.push({
+        rect: { left: r.left, top: r.top, right: r.right, bottom: r.bottom },
+        value: { annotation: a, num: i + 1, target: el },
+      });
+    });
+
+    // Merge annotations on close-together elements into one grouped marker.
+    markers = clusterByProximity(resolved, cfg.clusterDistance).map((group) => {
+      if (group.length === 1) {
+        const { annotation: a, num, target } = group[0];
+        return (
+          <Marker
+            key={a.id}
+            annotation={a}
+            target={target}
+            num={num}
+            focused={a.id === focused}
+            minimized={minimized.has(a.id)}
+          />
+        );
+      }
+      const id = clusterId(group);
+      return (
+        <ClusterMarker
+          key={id}
+          clusterId={id}
+          members={group}
+          focused={id === focused}
+          minimized={minimized.has(id)}
+        />
+      );
+    });
+  }
 
   return (
     <>

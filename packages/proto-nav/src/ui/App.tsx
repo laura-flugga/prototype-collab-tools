@@ -1,5 +1,5 @@
 import { config, isOpen } from "../core/store";
-import { MenuButton } from "./MenuButton";
+import { Toolbar } from "./Toolbar";
 import { Gallery } from "./Gallery";
 
 /** Root component rendered into the shadow root. Reactive to the `config` and
@@ -9,7 +9,7 @@ export function App() {
   if (!cfg) return null;
   return (
     <>
-      <MenuButton position={cfg.position} draggable={cfg.draggable} />
+      <Toolbar position={cfg.position} draggable={cfg.draggable} notesToggle={cfg.notesToggle} />
       {isOpen.value ? <Gallery config={cfg} /> : null}
     </>
   );
