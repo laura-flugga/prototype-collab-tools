@@ -49,7 +49,7 @@ export const styles = /* css */ `
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 2147483001;
+    z-index: 2147483040;
     width: max-content;
     max-width: 280px;
     background: #1a1a2e;
