@@ -10,8 +10,10 @@ import {
 import type { Annotation, Placement } from "../types";
 import { focus, toggleMinimized } from "../core/store";
 
-const BASE_Z = 2147483001;
 const RING_BASE_Z = 2147483000;
+const BADGE_Z = 2147483001; // dots (minimized) — low band
+const CALLOUT_Z = 2147483040; // bubbles (expanded) — high band, above a focused dot
+const FOCUS_BUMP = 20; // clicking raises a marker above same-kind neighbours
 const PAD = 8; // min viewport gap kept around a callout
 
 const OPPOSITE: Record<string, string> = {
@@ -117,9 +119,11 @@ export function Marker({
     return cleanup;
   }, [annotation, target, minimized]);
 
-  // Clicking a callout raises it above overlapping neighbours.
-  const calloutZ = focused ? BASE_Z + 20 : BASE_Z;
-  const ringZ = focused ? RING_BASE_Z + 20 : RING_BASE_Z;
+  // Bubbles always sit in a higher band than dots; focus raises a marker above
+  // its same-kind neighbours without ever letting a dot cross above a bubble.
+  const bandBase = minimized ? BADGE_Z : CALLOUT_Z;
+  const calloutZ = bandBase + (focused ? FOCUS_BUMP : 0);
+  const ringZ = RING_BASE_Z + (focused ? FOCUS_BUMP : 0);
 
   return (
     <>
