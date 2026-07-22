@@ -42,5 +42,21 @@
         </div>
       </div>
     </div>
+
+    <!-- Annotations embedded on the flow itself: hidden by default and with no
+         floating button, so the proto-nav menu (and its live preview) controls
+         them. Toggling notes in the menu shows/hides these in the preview. -->
+    <script src="../../packages/annotations/dist/annotations.iife.js"></script>
+    <script>
+      Annotations.init({
+        toggleButton: false,
+        annotations: [
+          { target: "brand", number: "1", title: "Brand mark", body: "Returns to the dashboard.", placement: "bottom" },
+          { target: "save", number: "2", title: "Save action", body: "Persists changes.", placement: "bottom" },
+          { target: "name", number: "3", title: "Full name", body: "Shown on the profile.", placement: "right" },
+          { target: "email", number: "4", title: "Work email", body: "Used for sign-in.", placement: "right" }
+        ]
+      });
+    </script>
   </body>
 </html>
