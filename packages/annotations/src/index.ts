@@ -17,6 +17,21 @@ export type { Annotation, AnnotationsConfig, Placement } from "./types";
 let pollTimer: ReturnType<typeof setInterval> | null = null;
 let observer: MutationObserver | null = null;
 let rescanQueued = false;
+let parentControlAdded = false;
+
+/** Let an embedding parent frame (e.g. a proto-nav live preview) mirror its
+ *  show/hide-notes state into this widget, so previews reflect the notes toggle.
+ *  Only responds to the specific message type and only toggles visibility. */
+function setupParentControl(): void {
+  if (parentControlAdded || typeof window === "undefined") return;
+  parentControlAdded = true;
+  window.addEventListener("message", (e: MessageEvent) => {
+    const d = e.data as { type?: unknown; show?: unknown } | null;
+    if (!d || typeof d !== "object" || d.type !== "proto-nav:notes") return;
+    if (d.show) showStore();
+    else hideStore();
+  });
+}
 
 /** Resolve the annotation set for a raw config, by precedence:
  *  inline `annotations` > `snapshotUrl` > `sheetUrl`. */
@@ -44,6 +59,7 @@ export function init(arg?: AnnotationsConfig): void {
   const norm = normalizeConfig(raw);
 
   mount();
+  setupParentControl();
   cfgStore.value = norm;
   if (norm.startVisible) visible.value = true;
 
