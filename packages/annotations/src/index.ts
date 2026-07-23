@@ -1,13 +1,19 @@
 import { normalizeConfig, resolveConfig } from "./config";
 import { mount, unmount } from "./core/mount";
 import {
+  allCollapsed,
   annotations as annStore,
+  collapseAll as collapseAllStore,
   config as cfgStore,
+  expandAll as expandAllStore,
+  expandedIds,
   hide as hideStore,
   minimizedIds,
   rescan,
+  setMinimizedIds as setMinimizedIdsStore,
   show as showStore,
   toggle as toggleStore,
+  toggleCollapseAll as toggleCollapseAllStore,
   visible,
 } from "./core/store";
 import { coerceAnnotations, fetchSheet, fetchSnapshot } from "./sheet";
@@ -103,6 +109,27 @@ export function toggle(): void {
   toggleStore();
 }
 
+/** Collapse every annotation to its number badge — notes stay on the page and
+ *  anchored, just out of the way. Driven by external UIs such as proto-nav. */
+export function collapseAll(): void {
+  collapseAllStore();
+}
+
+/** Expand every annotation back to a full callout. */
+export function expandAll(): void {
+  expandAllStore();
+}
+
+/** Flip between collapsed-to-badges and fully expanded. */
+export function toggleCollapseAll(): void {
+  toggleCollapseAllStore();
+}
+
+/** Whether annotations are currently collapsed to badges. */
+export function isCollapsed(): boolean {
+  return allCollapsed.value;
+}
+
 /** Force an immediate re-scan of anchor targets. */
 export function refresh(): void {
   rescan();
@@ -117,9 +144,10 @@ export function isVisible(): boolean {
 /** Replace which annotations are collapsed to just their number badge. Lets a
  *  host app draw attention to a subset of callouts in response to its own
  *  state changes (e.g. a modal opening) — pass every other loaded id to
- *  collapse, or an empty array to expand everything. */
+ *  collapse, or an empty array to expand everything. Takes precedence over
+ *  `collapseAll()`, exiting that mode if it was on. */
 export function setMinimized(ids: Iterable<string>): void {
-  minimizedIds.value = new Set(ids);
+  setMinimizedIdsStore(ids);
 }
 
 /** Remove the widget entirely and stop polling/observing. */
@@ -131,6 +159,9 @@ export function destroy(): void {
   annStore.value = [];
   cfgStore.value = null;
   visible.value = false;
+  allCollapsed.value = false;
+  expandedIds.value = new Set();
+  minimizedIds.value = new Set();
   unmount();
 }
 
@@ -139,9 +170,13 @@ export const Annotations = {
   show,
   hide,
   toggle,
+  collapseAll,
+  expandAll,
+  toggleCollapseAll,
+  isCollapsed,
+  setMinimized,
   refresh,
   isVisible,
-  setMinimized,
   destroy,
 };
 export default Annotations;

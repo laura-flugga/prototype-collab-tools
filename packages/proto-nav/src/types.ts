@@ -43,9 +43,10 @@ export interface ProtoNavConfig {
   startOpen?: boolean;
   /** Open the gallery on load only when no entry URL matches the current location. Default: false. */
   openOnFirstLoad?: boolean;
-  /** Render a "Show / Hide notes" control inside the gallery that drives the
-   *  `annotations` widget (via its `window.Annotations` global), so reviewers
-   *  toggle annotations from the nav menu instead of a separate button. Default: false. */
+  /** Render the notes controls driven by the `annotations` widget (via its
+   *  `window.Annotations` global): Show/Hide notes and Collapse/Expand all
+   *  (collapsing leaves each note on the page as a number badge) in the
+   *  toolbar, plus a Show/Hide control in the gallery header. Default: false. */
   notesToggle?: boolean;
   /** Show a live iframe preview of each flow as its card thumbnail (falls back to
    *  a generated placeholder per entry). A per-entry `thumbnail` always wins.

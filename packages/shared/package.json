@@ -1,24 +1,50 @@
 {
   "name": "@proto-collab/shared",
-  "version": "0.0.0",
-  "private": true,
-  "description": "Internal shared primitives (Shadow-DOM mount, CSV parser, types) bundled into proto-nav and annotations. Not published.",
+  "version": "0.1.0",
+  "description": "Shared primitives behind the prototype-collab widgets: a Shadow-DOM host, a CSV parser, and common types. Inlined into @proto-collab/nav and @proto-collab/annotations; published for direct reuse.",
   "license": "MIT",
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laura-flugga/prototype-collab-tools.git",
+    "directory": "packages/shared"
+  },
+  "homepage": "https://github.com/laura-flugga/prototype-collab-tools/tree/main/packages/shared#readme",
+  "bugs": "https://github.com/laura-flugga/prototype-collab-tools/issues",
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm --prefix ../.. run build"
   },
-  "peerDependencies": {
-    "preact": "^10.25.1"
-  },
+  "keywords": [
+    "shadow-dom",
+    "csv",
+    "widget",
+    "prototype",
+    "framework-agnostic"
+  ],
   "devDependencies": {
-    "preact": "^10.25.1",
+    "tsup": "^8.3.5",
     "typescript": "^5.7.2"
   }
 }

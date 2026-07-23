@@ -23,7 +23,7 @@ Add a `data-annote="<name>"` attribute to any host element you want to annotate,
 
 ```html
 <script
-  src="https://cdn.jsdelivr.net/npm/annotations"
+  src="https://cdn.jsdelivr.net/npm/@proto-collab/annotations"
   data-sheet="https://docs.google.com/spreadsheets/d/e/XXXX/pub?output=csv"
 ></script>
 ```
@@ -31,11 +31,11 @@ Add a `data-annote="<name>"` attribute to any host element you want to annotate,
 **npm:**
 
 ```bash
-npm install annotations
+npm install @proto-collab/annotations
 ```
 
 ```ts
-import { Annotations } from "annotations";
+import { Annotations } from "@proto-collab/annotations";
 
 Annotations.init({
   sheetUrl: "https://docs.google.com/spreadsheets/d/e/XXXX/pub?output=csv",
@@ -63,6 +63,8 @@ Each callout has a **minimize** button (`−`) that collapses it to just its num
 
 When several annotations target elements that sit very close together, they'd otherwise crowd the same spot. They're automatically **merged into one grouped bubble** ("2 notes here") that lists each note; hovering a row highlights that note's own element. Tune or disable it with `clusterDistance` (px gap, default `16`; `0` disables).
 
+Collapsed, a group shows a **stack glyph** next to the number of notes in it, so a group of 2 is never misread as note 2 — a plain badge is always one note's own number.
+
 ## API
 
 ```ts
@@ -70,6 +72,10 @@ Annotations.init(config?: AnnotationsConfig): void
 Annotations.show(): void
 Annotations.hide(): void
 Annotations.toggle(): void
+Annotations.collapseAll(): void      // collapse every note to its number badge
+Annotations.expandAll(): void
+Annotations.toggleCollapseAll(): void
+Annotations.isCollapsed(): boolean
 Annotations.refresh(): void   // force a re-scan of targets
 Annotations.destroy(): void
 ```
@@ -89,7 +95,7 @@ Annotations.destroy(): void
 | `toggleButton`| `boolean`       | `true`         | Render the built-in floating show/hide button. Set `false` when another UI (e.g. [proto-nav](../proto-nav)'s `notesToggle`) controls visibility. |
 | `debug`       | `boolean`       | `false`        | Log missing targets and fetch errors. |
 
-When annotations overlap, **click a callout to bring it to the front**. The API also exposes `Annotations.isVisible()` so external UIs can reflect the current state.
+When annotations overlap, **click a callout to bring it to the front**. Each callout also minimizes to a number badge via its `−` button, and `collapseAll()` does that to every note at once — the notes stay anchored on the page, just out of the way (that's what [proto-nav](../proto-nav)'s toolbar "Collapse all" drives). The API also exposes `Annotations.isVisible()` and `Annotations.isCollapsed()` so external UIs can reflect the current state.
 
 Config also resolves from the `<script>` tag's `data-*` attributes (`data-sheet`, `data-snapshot`, `data-attribute`, `data-poll`, `data-start-visible`, `data-observe`, `data-cluster-distance`, `data-debug`) or a `window.AnnotationsConfig` global. Precedence: `init()` argument › `window.AnnotationsConfig` › script `data-*`.
 

@@ -187,9 +187,41 @@ export function ClusterMarker({
           class={`an-badge an-cluster-badge${focused ? " an-focused" : ""}`}
           style={{ zIndex: calloutZ }}
           title={`${members.length} notes here — click to expand`}
+          // Without this the accessible name would be the bare count, which
+          // reads exactly like a note's own number.
+          aria-label={`${members.length} notes here`}
           onPointerDown={() => focus(clusterId)}
           onClick={() => toggleMinimized(clusterId)}
         >
+          {/* Stack glyph: marks the number as "how many notes", not a note's
+              number. Drawn inline rather than as ⧉ (U+29C9) — the shadow root
+              resets fonts and coverage for that codepoint is patchy. Stroke is
+              1.55 so it carries the same optical weight as the 800-weight
+              numeral beside it. */}
+          <svg width="11" height="11" viewBox="0 0 11 11" aria-hidden="true">
+            <rect
+              x="3.2"
+              y="0.9"
+              width="6.9"
+              height="6.9"
+              rx="1.8"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.55"
+            />
+            {/* Front card is filled with the pill's own colour (set in CSS, so
+                it tracks the hover state) to occlude the card behind it. */}
+            <rect
+              class="an-stack-front"
+              x="0.9"
+              y="3.2"
+              width="6.9"
+              height="6.9"
+              rx="1.8"
+              stroke="currentColor"
+              stroke-width="1.55"
+            />
+          </svg>
           {members.length}
         </button>
       ) : (

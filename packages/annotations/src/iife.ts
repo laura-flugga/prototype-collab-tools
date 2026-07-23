@@ -7,9 +7,13 @@ export {
   show,
   hide,
   toggle,
+  collapseAll,
+  expandAll,
+  toggleCollapseAll,
+  isCollapsed,
+  setMinimized,
   refresh,
   isVisible,
-  setMinimized,
   destroy,
 } from "./index";
 

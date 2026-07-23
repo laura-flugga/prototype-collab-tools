@@ -1,6 +1,6 @@
 # proto-nav
 
-A tiny, **framework-agnostic** prototype navigator. Drop it into any web prototype and it renders a landing **gallery of flow cards** (grouped as flows / requirements / edge cases) that deep-link into each flow, plus a **persistent, draggable floating toolbar** on every page — a Menu button to open the gallery, and (with `notesToggle`) a Show/Hide notes button — that you can drag anywhere by its grip.
+A tiny, **framework-agnostic** prototype navigator. Drop it into any web prototype and it renders a landing **gallery of flow cards** (grouped as flows / requirements / edge cases) that deep-link into each flow, plus a **persistent, draggable floating toolbar** on every page — a Menu button to open the gallery and (with `notesToggle`) Show/Hide notes and Collapse/Expand all buttons — that you can drag anywhere by its grip. Toolbar controls are icon-only, with their label in a hover tooltip.
 
 ![proto-nav gallery](../../docs/images/proto-nav.png)
 
@@ -13,7 +13,7 @@ A tiny, **framework-agnostic** prototype navigator. Drop it into any web prototy
 **CDN / script tag (zero install):**
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/proto-nav"></script>
+<script src="https://cdn.jsdelivr.net/npm/@proto-collab/nav"></script>
 <script>
   ProtoNav.init({
     title: "My Prototype",
@@ -29,11 +29,11 @@ A tiny, **framework-agnostic** prototype navigator. Drop it into any web prototy
 **npm:**
 
 ```bash
-npm install proto-nav
+npm install @proto-collab/nav
 ```
 
 ```ts
-import { ProtoNav } from "proto-nav";
+import { ProtoNav } from "@proto-collab/nav";
 
 ProtoNav.init({ src: "/proto-nav.json" }); // or inline `entries`
 ```
@@ -60,7 +60,7 @@ ProtoNav.destroy(): void
 | `startOpen`       | `boolean`                                                    | `false`          | Open the gallery immediately on load, every time. |
 | `openOnFirstLoad` | `boolean`                                                    | `false`          | Open the gallery on load only if no entry URL matches the current page. |
 | `previews`        | `boolean`                                                    | `true`           | Use a live iframe preview of each flow as its card thumbnail (a per-entry `thumbnail` always wins). Pages that forbid framing render blank — set a `thumbnail` for those, or `previews: false` for placeholders. |
-| `notesToggle`     | `boolean`                                                    | `false`          | Add a "Show / Hide notes" button to the floating toolbar (and a matching control in the gallery) that drives the [`annotations`](../annotations) widget via its `window.Annotations` global. Pair with the annotations widget's `toggleButton: false`. |
+| `notesToggle`     | `boolean`                                                    | `false`          | Add the notes controls to the floating toolbar — "Show / Hide notes" and "Collapse / Expand all", which leaves every note on the page as a number badge instead of hiding it — plus a "Show / Hide notes" control in the gallery header. They drive the [`annotations`](../annotations) widget via its `window.Annotations` global. Pair with the annotations widget's `toggleButton: false`. |
 
 ### `Entry`
 
