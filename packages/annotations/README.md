@@ -63,6 +63,8 @@ Each callout has a **minimize** button (`−`) that collapses it to just its num
 
 When several annotations target elements that sit very close together, they'd otherwise crowd the same spot. They're automatically **merged into one grouped bubble** ("2 notes here") that lists each note; hovering a row highlights that note's own element. Tune or disable it with `clusterDistance` (px gap, default `16`; `0` disables).
 
+Collapsed, a group shows a **stack glyph** next to the number of notes in it, so a group of 2 is never misread as note 2 — a plain badge is always one note's own number.
+
 ## API
 
 ```ts

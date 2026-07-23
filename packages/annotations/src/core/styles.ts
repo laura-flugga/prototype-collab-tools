@@ -106,9 +106,26 @@ export const styles = /* css */ `
     white-space: nowrap;
     cursor: pointer;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transition: background 0.12s ease;
   }
   .an-badge:hover { background: #2fe00f; }
   .an-badge.an-focused { outline: 2px solid #0a0a14; }
+
+  /* A collapsed cluster shows how MANY notes are here, not a note's number. It
+     keeps the badge family's green and shape; the stack glyph alone marks it as
+     a group. (An offset "card behind" the pill was tried and dropped: a shadow
+     copy of a 999px-radius stadium renders as a crescent, not a card, and it
+     spills outside the focus ring.)
+     Left padding is 2px tighter than the right because the glyph's box carries
+     its own whitespace — matching both sides makes the pill look right-heavy. */
+  .an-badge.an-cluster-badge {
+    gap: 4px;
+    padding-left: 7px;
+  }
+  /* Front card of the glyph is filled with the pill's own colour so it occludes
+     the one behind it — kept in sync with the hover state. */
+  .an-badge.an-cluster-badge .an-stack-front { fill: #39ff14; }
+  .an-badge.an-cluster-badge:hover .an-stack-front { fill: #2fe00f; }
 
   .an-callout-title { font-weight: 700; margin: 0 0 2px; font-size: 13px; }
   .an-callout-body { margin: 0; color: #d8d8e6; white-space: pre-wrap; }
