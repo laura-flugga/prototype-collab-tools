@@ -70,6 +70,10 @@ Annotations.init(config?: AnnotationsConfig): void
 Annotations.show(): void
 Annotations.hide(): void
 Annotations.toggle(): void
+Annotations.collapseAll(): void      // collapse every note to its number badge
+Annotations.expandAll(): void
+Annotations.toggleCollapseAll(): void
+Annotations.isCollapsed(): boolean
 Annotations.refresh(): void   // force a re-scan of targets
 Annotations.destroy(): void
 ```
@@ -89,7 +93,7 @@ Annotations.destroy(): void
 | `toggleButton`| `boolean`       | `true`         | Render the built-in floating show/hide button. Set `false` when another UI (e.g. [proto-nav](../proto-nav)'s `notesToggle`) controls visibility. |
 | `debug`       | `boolean`       | `false`        | Log missing targets and fetch errors. |
 
-When annotations overlap, **click a callout to bring it to the front**. The API also exposes `Annotations.isVisible()` so external UIs can reflect the current state.
+When annotations overlap, **click a callout to bring it to the front**. Each callout also minimizes to a number badge via its `−` button, and `collapseAll()` does that to every note at once — the notes stay anchored on the page, just out of the way (that's what [proto-nav](../proto-nav)'s toolbar "Collapse all" drives). The API also exposes `Annotations.isVisible()` and `Annotations.isCollapsed()` so external UIs can reflect the current state.
 
 Config also resolves from the `<script>` tag's `data-*` attributes (`data-sheet`, `data-snapshot`, `data-attribute`, `data-poll`, `data-start-visible`, `data-observe`, `data-cluster-distance`, `data-debug`) or a `window.AnnotationsConfig` global. Precedence: `init()` argument › `window.AnnotationsConfig` › script `data-*`.
 

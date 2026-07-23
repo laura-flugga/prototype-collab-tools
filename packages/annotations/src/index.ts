@@ -1,12 +1,18 @@
 import { normalizeConfig, resolveConfig } from "./config";
 import { mount, unmount } from "./core/mount";
 import {
+  allCollapsed,
   annotations as annStore,
+  collapseAll as collapseAllStore,
   config as cfgStore,
+  expandAll as expandAllStore,
+  expandedIds,
   hide as hideStore,
+  minimizedIds,
   rescan,
   show as showStore,
   toggle as toggleStore,
+  toggleCollapseAll as toggleCollapseAllStore,
   visible,
 } from "./core/store";
 import { coerceAnnotations, fetchSheet, fetchSnapshot } from "./sheet";
@@ -102,6 +108,27 @@ export function toggle(): void {
   toggleStore();
 }
 
+/** Collapse every annotation to its number badge — notes stay on the page and
+ *  anchored, just out of the way. Driven by external UIs such as proto-nav. */
+export function collapseAll(): void {
+  collapseAllStore();
+}
+
+/** Expand every annotation back to a full callout. */
+export function expandAll(): void {
+  expandAllStore();
+}
+
+/** Flip between collapsed-to-badges and fully expanded. */
+export function toggleCollapseAll(): void {
+  toggleCollapseAllStore();
+}
+
+/** Whether annotations are currently collapsed to badges. */
+export function isCollapsed(): boolean {
+  return allCollapsed.value;
+}
+
 /** Force an immediate re-scan of anchor targets. */
 export function refresh(): void {
   rescan();
@@ -122,8 +149,23 @@ export function destroy(): void {
   annStore.value = [];
   cfgStore.value = null;
   visible.value = false;
+  allCollapsed.value = false;
+  expandedIds.value = new Set();
+  minimizedIds.value = new Set();
   unmount();
 }
 
-export const Annotations = { init, show, hide, toggle, refresh, isVisible, destroy };
+export const Annotations = {
+  init,
+  show,
+  hide,
+  toggle,
+  collapseAll,
+  expandAll,
+  toggleCollapseAll,
+  isCollapsed,
+  refresh,
+  isVisible,
+  destroy,
+};
 export default Annotations;

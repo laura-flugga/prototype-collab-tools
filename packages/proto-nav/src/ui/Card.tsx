@@ -18,7 +18,7 @@ export function Card({ entry, previews }: { entry: NormalizedEntry; previews: bo
       {entry.thumbnail ? (
         <img class="pn-thumb" src={entry.thumbnail} alt="" loading="lazy" />
       ) : previews ? (
-        <LivePreview url={entry.url} />
+        <LivePreview entry={entry} />
       ) : (
         <Placeholder entry={entry} />
       )}

@@ -11,6 +11,11 @@ export const scanTick = signal(0);
 export const focusedId = signal<string | null>(null);
 /** Ids of annotations collapsed to just their number badge. */
 export const minimizedIds = signal<Set<string>>(new Set());
+/** "Collapse all" mode: every marker renders as a badge — including ones that
+ *  appear later (new targets, re-clustering) — unless expanded individually. */
+export const allCollapsed = signal(false);
+/** Ids expanded one-by-one while `allCollapsed` is on. */
+export const expandedIds = signal<Set<string>>(new Set());
 
 // Ids we auto-collapsed to un-obscure the current selection, so we can restore
 // exactly those (and not user-minimized ones) when the selection changes/clears.
@@ -39,6 +44,8 @@ function restoreAutoCollapsed(): void {
  *  callouts are already positioned by the time a user clicks one, and raising
  *  z-index doesn't change geometry. */
 function collapseOverlapping(id: string): void {
+  // In collapse-all mode a click expands exactly one marker; nothing to un-obscure.
+  if (allCollapsed.value) return;
   const root = document.getElementById("annotations-host")?.shadowRoot;
   if (!root) return;
   const els = [...root.querySelectorAll<HTMLElement>(".an-callout[data-ann-id]")];
@@ -71,14 +78,49 @@ export function clearFocus(): void {
   focusedId.value = null;
 }
 
+/** Whether a marker currently renders as a badge rather than a full callout. */
+export function isMinimized(id: string): boolean {
+  return allCollapsed.value ? !expandedIds.value.has(id) : minimizedIds.value.has(id);
+}
+
 /** Collapse/expand an annotation between full callout and number-only badge. */
 export function toggleMinimized(id: string): void {
+  // While collapsed-all, per-marker toggling tracks the exceptions instead.
+  if (allCollapsed.value) {
+    const next = new Set(expandedIds.value);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    expandedIds.value = next;
+    return;
+  }
   const next = new Set(minimizedIds.value);
   if (next.has(id)) next.delete(id);
   else next.add(id);
   // A manual expand/collapse should not be undone by the auto-restore.
   autoCollapsed.delete(id);
   minimizedIds.value = next;
+}
+
+/** Collapse every annotation to its number badge. */
+export function collapseAll(): void {
+  autoCollapsed = new Set();
+  expandedIds.value = new Set();
+  focusedId.value = null;
+  allCollapsed.value = true;
+}
+
+/** Expand every annotation back to a full callout, including any the reviewer
+ *  had minimized one at a time. */
+export function expandAll(): void {
+  autoCollapsed = new Set();
+  expandedIds.value = new Set();
+  minimizedIds.value = new Set();
+  allCollapsed.value = false;
+}
+
+export function toggleCollapseAll(): void {
+  if (allCollapsed.value) expandAll();
+  else collapseAll();
 }
 
 export function show(): void {

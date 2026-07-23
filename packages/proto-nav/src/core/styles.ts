@@ -12,14 +12,22 @@ export const styles = /* css */ `
     line-height: 1.4;
   }
 
+  /* Both widgets mount sibling shadow hosts on document.body, so their fixed
+     children share the root stacking context and compare z-index directly.
+     The annotations widget tops out at 2147483060 (a focused callout), so the
+     nav sits in a band above it: its toolbar and modal gallery must never be
+     covered by a note. */
+
   /* ---- Floating draggable toolbar (Menu + optional Notes) ---- */
   .pn-toolbar {
     position: fixed;
-    z-index: 2147483000;
+    z-index: 2147483500;
     display: inline-flex;
     align-items: center;
     gap: 2px;
-    padding: 5px;
+    /* Extra room on the right so the last icon isn't tight against the edge —
+       the grip already provides that breathing room on the left. */
+    padding: 5px 11px 5px 5px;
     border-radius: 999px;
     background: #1a1a2e;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
@@ -38,25 +46,55 @@ export const styles = /* css */ `
     cursor: grab;
   }
   .pn-grip:active { cursor: grabbing; }
+  /* Icon-only buttons — the label lives in the tooltip below, so the bar stays
+     compact as controls are added. */
   .pn-tool-btn {
+    position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    padding: 8px 14px;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
     border: none;
     border-radius: 999px;
     background: transparent;
     color: #fff;
-    font-size: 14px;
-    font-weight: 600;
     cursor: pointer;
-    transition: background 0.12s ease;
+    transition: background 0.12s ease, color 0.12s ease;
   }
-  .pn-tool-btn:hover { background: rgba(255, 255, 255, 0.1); }
+  /* Hover is the only background state: the notes buttons carry their on/off
+     state in the icon itself (eye vs struck-through eye, chevrons in vs out)
+     and in the tooltip label, not in a filled pill. */
+  .pn-tool-btn:hover:not(:disabled) { background: rgba(255, 255, 255, 0.12); }
+  .pn-tool-btn:disabled { color: #6b6b85; cursor: default; }
   .pn-tool-ico { display: block; }
-  /* Notes on/off dot: grey when hidden, green when shown. */
-  .pn-tool-dot { width: 8px; height: 8px; border-radius: 50%; background: #6b7280; }
-  .pn-tool-dot.pn-dot-on { background: #4ade80; }
+
+  /* Tooltip: the button's label, revealed on hover/keyboard focus. */
+  .pn-tool-btn::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 9px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 9px;
+    border-radius: 7px;
+    background: #fff;
+    color: #1a1a2e;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.12s ease 0.25s;
+  }
+  .pn-toolbar.pn-tip-below .pn-tool-btn::after { bottom: auto; top: calc(100% + 9px); }
+  .pn-tool-btn:hover::after,
+  .pn-tool-btn:focus-visible::after { opacity: 1; }
+  /* No tooltips mid-drag — the bar is moving under the cursor. */
+  .pn-toolbar.pn-dragging .pn-tool-btn::after { opacity: 0; }
 
   .pn-pos-bottom-right { bottom: 20px; right: 20px; }
   .pn-pos-bottom-left  { bottom: 20px; left: 20px; }
@@ -67,7 +105,7 @@ export const styles = /* css */ `
   .pn-overlay {
     position: fixed;
     inset: 0;
-    z-index: 2147483001;
+    z-index: 2147483600;
     background: rgba(10, 10, 20, 0.55);
     backdrop-filter: blur(2px);
     display: flex;
@@ -160,7 +198,19 @@ export const styles = /* css */ `
 
   .pn-thumb { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; background: #f2f2f6; }
   .pn-preview { position: relative; overflow: hidden; }
-  .pn-preview iframe { position: absolute; top: 0; left: 0; border: 0; pointer-events: none; background: #fff; }
+  .pn-preview iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 0;
+    pointer-events: none;
+    background: #fff;
+    transition: opacity 0.2s ease;
+  }
+  /* Shown under the frame until it has loaded, so a card is never blank. */
+  .pn-preview-fallback { position: absolute; inset: 0; }
+  .pn-preview-fallback.pn-loading { animation: pn-pulse 1.2s ease-in-out infinite; }
+  @keyframes pn-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.65; } }
 
   .pn-card-body { display: block; padding: 12px 14px 14px; }
   .pn-card-title { display: block; font-size: 15px; font-weight: 600; margin: 0 0 4px; }

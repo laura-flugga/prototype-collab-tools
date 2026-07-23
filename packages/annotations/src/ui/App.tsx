@@ -5,7 +5,7 @@ import {
   clearFocus,
   config,
   focusedId,
-  minimizedIds,
+  isMinimized,
   scanTick,
   visible,
 } from "../core/store";
@@ -49,7 +49,6 @@ export function App() {
   if (!cfg) return null;
 
   const focused = focusedId.value;
-  const minimized = minimizedIds.value;
 
   let markers: VNode[] | null = null;
   if (visible.value) {
@@ -83,7 +82,7 @@ export function App() {
             target={target}
             num={num}
             focused={a.id === focused}
-            minimized={minimized.has(a.id)}
+            minimized={isMinimized(a.id)}
           />
         );
       }
@@ -94,7 +93,7 @@ export function App() {
           clusterId={id}
           members={group}
           focused={id === focused}
-          minimized={minimized.has(id)}
+          minimized={isMinimized(id)}
         />
       );
     });

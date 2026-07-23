@@ -1,4 +1,8 @@
-/** All annotation widget CSS, injected into the shadow root for full isolation. */
+/** All annotation widget CSS, injected into the shadow root for full isolation.
+ *
+ *  z-index budget: everything here stays at or below 2147483060 (a focused
+ *  callout, see Marker.tsx). The sibling `proto-nav` widget deliberately sits in
+ *  a band above that, so its toolbar and gallery are never covered by a note. */
 export const styles = /* css */ `
   :host { all: initial; }
   *, *::before, *::after { box-sizing: border-box; }
