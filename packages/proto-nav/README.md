@@ -13,7 +13,7 @@ A tiny, **framework-agnostic** prototype navigator. Drop it into any web prototy
 **CDN / script tag (zero install):**
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/proto-nav"></script>
+<script src="https://cdn.jsdelivr.net/npm/@proto-collab/nav"></script>
 <script>
   ProtoNav.init({
     title: "My Prototype",
@@ -29,11 +29,11 @@ A tiny, **framework-agnostic** prototype navigator. Drop it into any web prototy
 **npm:**
 
 ```bash
-npm install proto-nav
+npm install @proto-collab/nav
 ```
 
 ```ts
-import { ProtoNav } from "proto-nav";
+import { ProtoNav } from "@proto-collab/nav";
 
 ProtoNav.init({ src: "/proto-nav.json" }); // or inline `entries`
 ```

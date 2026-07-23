@@ -37,7 +37,7 @@ Zero-install via CDN — drop a script tag into any prototype:
 
 ```html
 <!-- Navigator: a menu of your flows -->
-<script src="https://cdn.jsdelivr.net/npm/proto-nav"></script>
+<script src="https://cdn.jsdelivr.net/npm/@proto-collab/nav"></script>
 <script>
   ProtoNav.init({
     startOpen: true,            // open the menu on load
@@ -51,12 +51,12 @@ Zero-install via CDN — drop a script tag into any prototype:
 
 <!-- Annotations: auto-boots from a published Google Sheet -->
 <script
-  src="https://cdn.jsdelivr.net/npm/annotations"
+  src="https://cdn.jsdelivr.net/npm/@proto-collab/annotations"
   data-sheet="https://docs.google.com/spreadsheets/d/e/XXXX/pub?output=csv"
 ></script>
 ```
 
-Or install from npm: `npm install proto-nav annotations`.
+Or install from npm: `npm install @proto-collab/nav @proto-collab/annotations`.
 
 ## How to use it
 

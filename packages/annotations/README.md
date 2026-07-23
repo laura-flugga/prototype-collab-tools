@@ -23,7 +23,7 @@ Add a `data-annote="<name>"` attribute to any host element you want to annotate,
 
 ```html
 <script
-  src="https://cdn.jsdelivr.net/npm/annotations"
+  src="https://cdn.jsdelivr.net/npm/@proto-collab/annotations"
   data-sheet="https://docs.google.com/spreadsheets/d/e/XXXX/pub?output=csv"
 ></script>
 ```
@@ -31,11 +31,11 @@ Add a `data-annote="<name>"` attribute to any host element you want to annotate,
 **npm:**
 
 ```bash
-npm install annotations
+npm install @proto-collab/annotations
 ```
 
 ```ts
-import { Annotations } from "annotations";
+import { Annotations } from "@proto-collab/annotations";
 
 Annotations.init({
   sheetUrl: "https://docs.google.com/spreadsheets/d/e/XXXX/pub?output=csv",
