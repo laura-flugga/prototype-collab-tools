@@ -11,6 +11,7 @@ export {
   expandAll,
   toggleCollapseAll,
   isCollapsed,
+  setMinimized,
   refresh,
   isVisible,
   destroy,

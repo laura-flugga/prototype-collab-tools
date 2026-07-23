@@ -123,6 +123,17 @@ export function toggleCollapseAll(): void {
   else collapseAll();
 }
 
+/** Replace the collapsed set outright. Leaves "collapse all" mode if it was on:
+ *  while that mode is active `isMinimized` reads `expandedIds` and ignores
+ *  `minimizedIds`, so an explicit list from the host app would otherwise be
+ *  silently dropped. An explicit list wins. */
+export function setMinimizedIds(ids: Iterable<string>): void {
+  autoCollapsed = new Set();
+  expandedIds.value = new Set();
+  allCollapsed.value = false;
+  minimizedIds.value = new Set(ids);
+}
+
 export function show(): void {
   visible.value = true;
   rescan();
