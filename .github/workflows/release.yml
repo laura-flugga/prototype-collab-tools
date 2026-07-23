@@ -31,10 +31,12 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - run: npm ci
+      # Build first, and from the root so @proto-collab/shared goes before the
+      # widgets: its types resolve through its exports to dist, so typecheck and
+      # tests can't see it until it has been built.
+      - run: npm run build
       - run: npm run typecheck --workspaces --if-present
       - run: npm test --workspaces --if-present
-      # Root build, so @proto-collab/shared is built before the widgets inline it.
-      - run: npm run build
 
       - name: Publish packages with a new version
         env:
