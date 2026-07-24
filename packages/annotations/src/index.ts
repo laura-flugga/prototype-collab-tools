@@ -9,11 +9,15 @@ import {
   expandedIds,
   hide as hideStore,
   minimizedIds,
+  picking,
   rescan,
   setMinimizedIds as setMinimizedIdsStore,
   show as showStore,
+  startPicking as startPickingStore,
+  stopPicking as stopPickingStore,
   toggle as toggleStore,
   toggleCollapseAll as toggleCollapseAllStore,
+  toast,
   visible,
 } from "./core/store";
 import { coerceAnnotations, fetchSheet, fetchSnapshot } from "./sheet";
@@ -150,6 +154,22 @@ export function setMinimized(ids: Iterable<string>): void {
   setMinimizedIdsStore(ids);
 }
 
+/** Enter target-picking mode: click a host element to copy its `target` string
+ *  (for pasting into the sheet). Driven by external UIs such as proto-nav. */
+export function startPicking(): void {
+  startPickingStore();
+}
+
+/** Leave target-picking mode. */
+export function stopPicking(): void {
+  stopPickingStore();
+}
+
+/** Whether target-picking mode is currently active. */
+export function isPicking(): boolean {
+  return picking.value;
+}
+
 /** Remove the widget entirely and stop polling/observing. */
 export function destroy(): void {
   if (pollTimer) clearInterval(pollTimer);
@@ -159,6 +179,8 @@ export function destroy(): void {
   annStore.value = [];
   cfgStore.value = null;
   visible.value = false;
+  picking.value = false;
+  toast.value = null;
   allCollapsed.value = false;
   expandedIds.value = new Set();
   minimizedIds.value = new Set();
@@ -177,6 +199,9 @@ export const Annotations = {
   setMinimized,
   refresh,
   isVisible,
+  startPicking,
+  stopPicking,
+  isPicking,
   destroy,
 };
 export default Annotations;

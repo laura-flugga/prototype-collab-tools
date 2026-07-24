@@ -4,6 +4,7 @@ import type { ComponentChildren } from "preact";
 import {
   notesCollapsed,
   notesShown,
+  startPicking,
   syncNotes,
   toggleCollapsed,
   toggleGallery,
@@ -130,8 +131,20 @@ function CollapseButton() {
   );
 }
 
+/** "Pick target": enters the annotations widget's target-picking mode so an
+ *  author can click a host element and copy its `target` string. Momentary —
+ *  the widget exits pick mode on its own after one pick or Escape. */
+function PickButton() {
+  return (
+    <ToolButton label="Pick annotation target" onClick={startPicking}>
+      <circle cx="8" cy="8" r="4.2" fill="none" stroke="currentColor" stroke-width="1.5" />
+      <path d="M8 1v2.2M8 12.8V15M1 8h2.2M12.8 8H15" {...STROKE} stroke-width={1.5} />
+    </ToolButton>
+  );
+}
+
 /** Floating, draggable toolbar grouping the Menu button and (optionally) the
- *  notes controls. Every control is icon-only with a hover
+ *  notes controls and Pick target. Every control is icon-only with a hover
  *  tooltip, so the bar stays small however many there are. Drag by the grip or
  *  the toolbar background; the buttons stay pure click targets. Position
  *  persists in localStorage. */
@@ -139,10 +152,12 @@ export function Toolbar({
   position,
   draggable,
   notesToggle,
+  picker,
 }: {
   position: ButtonPosition;
   draggable: boolean;
   notesToggle: boolean;
+  picker: boolean;
 }) {
   const [pos, setPos] = useState<Pos | null>(() => (draggable ? loadPos() : null));
   const [dragging, setDragging] = useState(false);
@@ -243,6 +258,7 @@ export function Toolbar({
           <CollapseButton />
         </>
       ) : null}
+      {picker ? <PickButton /> : null}
     </div>
   );
 }

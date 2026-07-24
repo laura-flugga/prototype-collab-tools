@@ -6,17 +6,17 @@ import {
   config,
   focusedId,
   isMinimized,
+  picking,
   scanTick,
   visible,
 } from "../core/store";
 import { clusterByProximity, type Positioned } from "../cluster";
+import { resolveTarget } from "../resolve";
 import { Marker } from "./Marker";
 import { ClusterMarker, type ClusterMember } from "./ClusterMarker";
 import { ToggleButton } from "./ToggleButton";
-
-function selectorFor(attr: string, value: string): string {
-  return `[${attr}="${value.replace(/"/g, '\\"')}"]`;
-}
+import { Picker } from "./Picker";
+import { Toast } from "./Toast";
 
 /** Stable id for a cluster, independent of member order. */
 function clusterId(members: ClusterMember[]): string {
@@ -55,9 +55,7 @@ export function App() {
     // Resolve each annotation's target element and measure it.
     const resolved: Positioned<ClusterMember>[] = [];
     annotations.value.forEach((a, i) => {
-      const el = a.target
-        ? document.querySelector<HTMLElement>(selectorFor(cfg.attribute, a.target))
-        : null;
+      const el = a.target ? resolveTarget(document, cfg.attribute, a.target) : null;
       if (!el) {
         if (cfg.debug && a.target) {
           console.warn(`[annotations] no target for "${a.target}" (${cfg.attribute})`);
@@ -103,6 +101,8 @@ export function App() {
     <>
       {cfg.toggleButton ? <ToggleButton /> : null}
       {markers}
+      {picking.value ? <Picker /> : null}
+      <Toast />
     </>
   );
 }

@@ -53,6 +53,7 @@ export function normalizeConfig(raw: ProtoNavConfig): NormalizedConfig {
     startOpen: raw.startOpen ?? false,
     openOnFirstLoad: raw.openOnFirstLoad ?? false,
     notesToggle: raw.notesToggle ?? false,
+    picker: raw.picker ?? false,
     previews: raw.previews ?? true,
   };
 }

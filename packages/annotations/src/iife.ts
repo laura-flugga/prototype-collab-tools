@@ -14,6 +14,9 @@ export {
   setMinimized,
   refresh,
   isVisible,
+  startPicking,
+  stopPicking,
+  isPicking,
   destroy,
 } from "./index";
 
