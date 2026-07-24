@@ -16,6 +16,11 @@ export const minimizedIds = signal<Set<string>>(new Set());
 export const allCollapsed = signal(false);
 /** Ids expanded one-by-one while `allCollapsed` is on. */
 export const expandedIds = signal<Set<string>>(new Set());
+/** True while the author is in target-picking mode (an authoring aid). */
+export const picking = signal(false);
+/** Transient confirmation message (e.g. "Copied: save"); null when hidden. It
+ *  outlives pick mode so the toast survives the auto-exit after a pick. */
+export const toast = signal<string | null>(null);
 
 // Ids we auto-collapsed to un-obscure the current selection, so we can restore
 // exactly those (and not user-minimized ones) when the selection changes/clears.
@@ -152,4 +157,19 @@ export function toggle(): void {
 /** Trigger a re-scan of anchor targets on the next render. */
 export function rescan(): void {
   scanTick.value = scanTick.value + 1;
+}
+
+/** Enter target-picking mode. Independent of notes visibility. */
+export function startPicking(): void {
+  picking.value = true;
+}
+
+/** Leave target-picking mode. */
+export function stopPicking(): void {
+  picking.value = false;
+}
+
+/** Show a transient confirmation message. */
+export function showToast(text: string): void {
+  toast.value = text;
 }

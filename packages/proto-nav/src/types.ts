@@ -48,6 +48,11 @@ export interface ProtoNavConfig {
    *  (collapsing leaves each note on the page as a number badge) in the
    *  toolbar, plus a Show/Hide control in the gallery header. Default: false. */
   notesToggle?: boolean;
+  /** Render a "Pick target" button in the toolbar. Clicking a host element copies
+   *  its annotation `target` string (via the `annotations` widget's picker) so
+   *  authors can grab it without hand-writing selectors. An authoring aid — off
+   *  by default so reviewers never see it. Default: false. */
+  picker?: boolean;
   /** Show a live iframe preview of each flow as its card thumbnail (falls back to
    *  a generated placeholder per entry). A per-entry `thumbnail` always wins.
    *  Pages that forbid framing render blank — use `thumbnail` for those. Default: true. */
@@ -68,5 +73,6 @@ export interface NormalizedConfig {
   startOpen: boolean;
   openOnFirstLoad: boolean;
   notesToggle: boolean;
+  picker: boolean;
   previews: boolean;
 }

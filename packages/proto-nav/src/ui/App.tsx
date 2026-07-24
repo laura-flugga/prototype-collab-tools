@@ -9,7 +9,12 @@ export function App() {
   if (!cfg) return null;
   return (
     <>
-      <Toolbar position={cfg.position} draggable={cfg.draggable} notesToggle={cfg.notesToggle} />
+      <Toolbar
+        position={cfg.position}
+        draggable={cfg.draggable}
+        notesToggle={cfg.notesToggle}
+        picker={cfg.picker}
+      />
       {isOpen.value ? <Gallery config={cfg} /> : null}
     </>
   );

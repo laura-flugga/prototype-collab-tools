@@ -13,6 +13,7 @@ export const notesCollapsed = signal(false);
 interface AnnotationsApi {
   toggle?: () => void;
   isVisible?: () => boolean;
+  startPicking?: () => void;
   toggleCollapseAll?: () => void;
   isCollapsed?: () => boolean;
 }
@@ -45,6 +46,12 @@ export function toggleCollapsed(): void {
   notesCollapsed.value = !notesCollapsed.value;
   annotationsApi()?.toggleCollapseAll?.();
   syncNotes();
+}
+
+/** Enter the annotations widget's target-picking mode (momentary; it exits on
+ *  its own after one pick or Escape). No-op if the widget isn't present. */
+export function startPicking(): void {
+  annotationsApi()?.startPicking?.();
 }
 
 export function openGallery(): void {

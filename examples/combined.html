@@ -46,11 +46,13 @@
         ]
       });
 
-      // Navigator: opens by default, and hosts the Show/Hide notes control.
+      // Navigator: opens by default, and hosts the notes + target-picker controls.
       ProtoNav.init({
         title: "Northwind Prototype",
         startOpen: true,
         notesToggle: true,
+        // Authoring aid, off by default — on here so the example demos it.
+        picker: true,
         entries: [
           { title: "Marketing home", url: "pages/home.html", type: "flow", description: "Landing page and sign-up." },
           { title: "Dashboard", url: "pages/dashboard.html", type: "flow", description: "Signed-in overview." },

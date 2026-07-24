@@ -1,6 +1,6 @@
 # proto-nav
 
-A tiny, **framework-agnostic** prototype navigator. Drop it into any web prototype and it renders a landing **gallery of flow cards** (grouped as flows / requirements / edge cases) that deep-link into each flow, plus a **persistent, draggable floating toolbar** on every page — a Menu button to open the gallery and (with `notesToggle`) Show/Hide notes and Collapse/Expand all buttons — that you can drag anywhere by its grip. Toolbar controls are icon-only, with their label in a hover tooltip.
+A tiny, **framework-agnostic** prototype navigator. Drop it into any web prototype and it renders a landing **gallery of flow cards** (grouped as flows / requirements / edge cases) that deep-link into each flow, plus a **persistent, draggable floating toolbar** on every page — a Menu button to open the gallery, (with `notesToggle`) Show/Hide notes and Collapse/Expand all buttons, and (with `picker`) a "Pick target" button for authoring annotations — that you can drag anywhere by its grip. Toolbar controls are icon-only, with their label in a hover tooltip.
 
 ![proto-nav gallery](../../docs/images/proto-nav.png)
 
@@ -61,6 +61,7 @@ ProtoNav.destroy(): void
 | `openOnFirstLoad` | `boolean`                                                    | `false`          | Open the gallery on load only if no entry URL matches the current page. |
 | `previews`        | `boolean`                                                    | `true`           | Use a live iframe preview of each flow as its card thumbnail (a per-entry `thumbnail` always wins). Pages that forbid framing render blank — set a `thumbnail` for those, or `previews: false` for placeholders. |
 | `notesToggle`     | `boolean`                                                    | `false`          | Add the notes controls to the floating toolbar — "Show / Hide notes" and "Collapse / Expand all", which leaves every note on the page as a number badge instead of hiding it — plus a "Show / Hide notes" control in the gallery header. They drive the [`annotations`](../annotations) widget via its `window.Annotations` global. Pair with the annotations widget's `toggleButton: false`. |
+| `picker`          | `boolean`                                                    | `false`          | Add a "Pick target" button to the toolbar. Clicking a host element copies its annotation `target` string (via the [`annotations`](../annotations) widget's picker) so authors can grab it without hand-writing selectors. An authoring aid — off by default so reviewers never see it; set `true` while writing annotations. |
 
 ### `Entry`
 

@@ -11,11 +11,17 @@ Drop-in, **framework-agnostic** prototype annotations. Design authors labelled c
 
 ## How anchoring works
 
-Add a `data-annote="<name>"` attribute to any host element you want to annotate, then reference that name in the `target` column of your sheet. Explicit attributes are more robust than inferred CSS selectors — they survive markup changes.
+Add a `data-annote="<name>"` attribute to any host element you want to annotate, then reference that name in the `target` column of your sheet. Explicit attributes are more robust than inferred CSS selectors — they survive markup changes, so they're the recommended choice for anything long-lived.
 
 ```html
 <button data-annote="start-visit">Start visit</button>
 ```
+
+A `target` that doesn't match any `data-annote` value is then tried as a **raw CSS selector** (`#id`, `[data-testid="…"]`, `section > button:nth-of-type(2)`). This lets you annotate an element without editing its markup — at the cost of the selector breaking if the markup changes. Attribute matching always wins, so existing sheets are unaffected.
+
+### Picking a target without hand-writing it
+
+Don't want to figure out the string by hand? Use the **target picker**: call `Annotations.startPicking()` (or click the "Pick target" button in [proto-nav](../proto-nav)'s toolbar, enabled with `picker: true`), then click any element in the page. Its best `target` string — the `data-annote` value if it has one, else a stable `#id` / `[data-testid]` selector, else a structural path — is copied to your clipboard, ready to paste into the sheet's `target` column. Press `Escape` to cancel.
 
 ## Install
 
@@ -77,6 +83,9 @@ Annotations.expandAll(): void
 Annotations.toggleCollapseAll(): void
 Annotations.isCollapsed(): boolean
 Annotations.refresh(): void   // force a re-scan of targets
+Annotations.startPicking(): void  // enter target-picking mode (click an element to copy its target)
+Annotations.stopPicking(): void
+Annotations.isPicking(): boolean
 Annotations.destroy(): void
 ```
 

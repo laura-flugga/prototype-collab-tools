@@ -179,6 +179,44 @@ export const styles = /* css */ `
     transform: rotate(45deg);
   }
 
+  /* ---- Picker: hover highlight while choosing a target to copy ---- */
+  .an-pick-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2147483002;
+    border: 2px dashed #4f46e5;
+    border-radius: 6px;
+    background: rgba(79, 70, 229, 0.12);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.22);
+    pointer-events: none;
+  }
+
+  /* ---- Toast: transient "Copied: …" confirmation ---- */
+  .an-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2147483003;
+    max-width: min(80vw, 420px);
+    padding: 9px 15px;
+    border-radius: 999px;
+    background: #1a1a2e;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.32);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    animation: an-toast-in 0.14s ease;
+  }
+  @keyframes an-toast-in {
+    from { opacity: 0; transform: translate(-50%, 6px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+  }
+
   /* ---- Target highlight ring: hidden until its annotation is selected ---- */
   .an-ring {
     position: fixed;

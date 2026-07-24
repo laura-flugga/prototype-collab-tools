@@ -20,7 +20,12 @@ describe("normalizeConfig", () => {
     expect(c.position).toBe("bottom-right");
     expect(c.draggable).toBe(true);
     expect(c.openOnFirstLoad).toBe(false);
+    expect(c.picker).toBe(false);
     expect(c.entries).toEqual([]);
+  });
+
+  it("lets picker be enabled", () => {
+    expect(normalizeConfig({ picker: true }).picker).toBe(true);
   });
 
   it("assigns ids from titles and enforces uniqueness", () => {
