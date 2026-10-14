@@ -20,3 +20,24 @@ export function isCovered(doc: Document, el: Element, hostId: string): boolean {
   if (!top) return false;
   return !(el === top || el.contains(top) || top.contains(el));
 }
+
+const CLIPS = /(auto|scroll|hidden|clip)/;
+
+/** Whether `el` is scrolled out of sight inside a scrolling ancestor (a side
+ *  panel's list, say). Its note would otherwise pin to the panel's edge. The
+ *  page's own scroll is not counted: a note below the fold still follows the
+ *  page as it scrolls. */
+export function isClipped(el: Element): boolean {
+  const r = el.getBoundingClientRect();
+  const view = el.ownerDocument.defaultView;
+  if (!view) return false;
+  for (let p = el.parentElement; p && p !== el.ownerDocument.body; p = p.parentElement) {
+    const s = view.getComputedStyle(p);
+    if (!CLIPS.test(s.overflow + s.overflowX + s.overflowY)) continue;
+    const b = p.getBoundingClientRect();
+    if (r.bottom <= b.top || r.top >= b.bottom || r.right <= b.left || r.left >= b.right) {
+      return true;
+    }
+  }
+  return false;
+}
