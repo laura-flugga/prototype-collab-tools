@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 import { arrow, autoUpdate, computePosition, flip, offset, shift } from "@floating-ui/dom";
+import { isClipped } from "../occlusion";
 import type { Annotation } from "../types";
 import { focus, toggleMinimized } from "../core/store";
 
@@ -83,6 +84,10 @@ export function ClusterMarker({
     const update = () => {
       const u = unionRect(targets);
       placeRing(ring, u, 3);
+      // Every member scrolled out of a panel: hide the group too.
+      const hidden = targets.every(isClipped) ? "hidden" : "";
+      ring.style.visibility = hidden;
+      callout.style.visibility = hidden;
 
       if (!arrowEl) {
         // Minimized: pin the count badge on the group's top-left corner.

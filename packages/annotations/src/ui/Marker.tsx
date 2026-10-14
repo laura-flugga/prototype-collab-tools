@@ -9,6 +9,7 @@ import {
 } from "@floating-ui/dom";
 import type { Annotation, Placement } from "../types";
 import { focus, toggleMinimized } from "../core/store";
+import { isClipped } from "../occlusion";
 
 const RING_BASE_Z = 2147483000;
 const BADGE_Z = 2147483001; // dots (minimized) — low band
@@ -62,6 +63,10 @@ export function Marker({
     const update = () => {
       // Highlight ring tracks the target's viewport box (callout uses fixed strategy).
       const r = target.getBoundingClientRect();
+      // Scrolled out of a panel: hide rather than pin to the panel's edge.
+      const hidden = isClipped(target) ? "hidden" : "";
+      ring.style.visibility = hidden;
+      callout.style.visibility = hidden;
       ring.style.left = `${r.left - 2}px`;
       ring.style.top = `${r.top - 2}px`;
       ring.style.width = `${r.width + 4}px`;

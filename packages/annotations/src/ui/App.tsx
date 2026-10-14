@@ -12,6 +12,7 @@ import {
 } from "../core/store";
 import { clusterByProximity, type Positioned } from "../cluster";
 import { resolveTarget } from "../resolve";
+import { isCovered } from "../occlusion";
 import { Marker } from "./Marker";
 import { ClusterMarker, type ClusterMember } from "./ClusterMarker";
 import { ToggleButton } from "./ToggleButton";
@@ -62,6 +63,8 @@ export function App() {
         }
         return;
       }
+      // A target behind an open modal or drawer: its note would float above it.
+      if (isCovered(document, el, "annotations-host")) return;
       const r = el.getBoundingClientRect();
       resolved.push({
         rect: { left: r.left, top: r.top, right: r.right, bottom: r.bottom },
